@@ -1,0 +1,10 @@
+namespace: lab101-postgres-operator
+resources:
+  - namespace.yaml
+  - operatorconfiguration.crd.yaml
+helmCharts:
+  - name: postgres-operator
+    version: 1.14.0
+    repo: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+    releaseName: postgres-operator
+    valuesFile: values.yaml
