@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: openebs-ndm
+  namespace: openebs
+spec:
+  template:
+    spec:
+      containers:
+        - name: node-disk-manager
+          volumeMounts:
+            - name: udev
+              mountPath: /run/udev
+              $patch: delete
+      volumes:
+        - name: udev
+          $patch: delete
