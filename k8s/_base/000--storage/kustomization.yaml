@@ -1,8 +1,0 @@
-namespace: openebs
-resources:
-  - openebs-operator.yaml
-patches:
-  - target:
-      kind: DaemonSet
-      name: openebs-ndm
-    path: patch-remove-udev.yaml
