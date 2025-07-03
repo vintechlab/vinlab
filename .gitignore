@@ -1,0 +1,11 @@
+# Files
+tmp*
+*.log
+
+# Folders
+_dev/
+_tmp/
+tmp/
+logs/
+.DS_Store
+.vscode
