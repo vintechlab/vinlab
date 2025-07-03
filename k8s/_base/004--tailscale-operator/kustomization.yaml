@@ -13,6 +13,6 @@ helmCharts:
 
   - name: vault-static-secret
     version: 0.1.2
-    repo: https://raw.githubusercontent.com/phamtanvinh/helmcharts/main
+    repo: https://vintechlab.github.io/vinhelm
     releaseName: vault-static-secret
     valuesFile: values-vault-static-secret.yaml
