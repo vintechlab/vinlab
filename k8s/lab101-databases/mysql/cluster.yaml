@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mysql-innodbcluster-sa
+  namespace: lab101-mysql
+---
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mysql-innodbcluster
+  namespace: lab101-mysql
+spec:
+  baseServerId: 1000
+  imagePullPolicy: IfNotPresent
+  instances: 2
+  router:
+    instances: 1
+  secretName: mysql-root-secret
+  serviceAccountName: mysql-innodbcluster-sa
+  tlsUseSelfSigned: true
+  version: 9.3.0

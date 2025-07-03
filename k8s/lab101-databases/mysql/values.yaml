@@ -1,0 +1,9 @@
+secretName: mysql-root-secret
+serverInstances: 2
+tls:
+  useSelfSigned: true
+credentials:
+  root:
+    user: root
+    host: "%"
+    password: root
