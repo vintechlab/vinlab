@@ -1,0 +1,6 @@
+---
+namespace: lab101-redis
+resources:
+  - namespace.yaml
+  - cluster.yaml
+  - _dev/secrets.yaml

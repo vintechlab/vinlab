@@ -1,0 +1,4 @@
+image:
+  repository: quay.io/spotahome/redis-operator
+  pullPolicy: IfNotPresent
+  tag: v1.3.0-rc1
