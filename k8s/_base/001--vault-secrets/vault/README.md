@@ -23,7 +23,7 @@ kubectl exec vault-0 -n vault -- sh -c '
 vault write auth/kubernetes/role/vault-role \
   audience=vault \
   bound_service_account_names=default \
-  bound_service_account_namespaces=external-dns,cert-manager,tailscale-operator,argocd,lab101-metrics,lab101-logging,lab101-fluent-bit,lab101-airflow \
+  bound_service_account_namespaces=external-dns,cert-manager,tailscale-operator,argocd \
   policies=default \
   ttl=24h'
 ```
