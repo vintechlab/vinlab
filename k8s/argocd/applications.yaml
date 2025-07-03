@@ -30,7 +30,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: git@gitlab.com:vin-fusion-reactor/vinlab.git
+        repoURL: git@github.com:vintechlab/vinlab.git
         revision: HEAD
         directories:
           - path: k8s/lab101*/*
@@ -42,7 +42,7 @@ spec:
     spec:
       project: argocd
       source:
-        repoURL: git@gitlab.com:vin-fusion-reactor/vinlab.git
+        repoURL: git@github.com:vintechlab/vinlab.git
         targetRevision: HEAD
         path: '{{.path.path}}'
       destination:
