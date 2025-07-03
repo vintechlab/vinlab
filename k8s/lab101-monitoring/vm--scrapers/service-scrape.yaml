@@ -1,0 +1,29 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: discover-all-metrics
+spec:
+  discoveryRole: "endpoints"
+  namespaceSelector:
+    any: true
+  endpoints:
+  - path: /metrics
+    port: metrics
+    scrape_interval: 10s
+    scrapeTimeout: 15s
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-state-metrics
+spec:
+  discoveryRole: "endpoints"
+  namespaceSelector:
+    matchNames:
+      - lab101-kube-state-metrics
+  endpoints:
+  - path: /metrics
+    port: http
+    scrape_interval: 10s
+    scrapeTimeout: 15s

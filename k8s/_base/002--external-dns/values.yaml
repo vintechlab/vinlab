@@ -1,0 +1,16 @@
+provider:
+  name: cloudflare
+env:
+  - name: CF_API_EMAIL
+    value: phamtanvinh.me@gmail.com
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token-secret
+        key: api-token
+serviceMonitor:
+  enabled: false
+txtOwnerId: vin
+domainFilters:
+  - vinlab.org
+policy: sync

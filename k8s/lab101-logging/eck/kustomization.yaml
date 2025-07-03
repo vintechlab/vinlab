@@ -1,0 +1,5 @@
+namespace: lab101-logging
+resources:
+  - es-cluster.yaml
+  - kibana.yaml
+  

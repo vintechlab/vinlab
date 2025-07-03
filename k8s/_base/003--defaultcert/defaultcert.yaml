@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: defaultcert
+spec:
+  secretName: defaultcert
+  issuerRef:
+    kind: ClusterIssuer
+    group: cert-manager.io
+    name: letsencrypt
+  dnsNames:
+    - "*.vinlab.org"

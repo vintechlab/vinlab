@@ -1,0 +1,23 @@
+---
+namespace: argocd
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - rbac/argocd-application-controller-clusterrole.yaml
+  - rbac/argocd-application-controller-clusterrolebinding.yaml
+  - rbac/argocd-applicationset-controller-clusterrole.yaml
+  - rbac/argocd-applicationset-controller-clusterrolebinding.yaml
+  - rbac/argocd-server-clusterrole.yaml
+  - rbac/argocd-server-clusterrolebinding.yaml
+  - argocd.yaml
+  - applications.yaml
+  - ingress.yaml
+  - argocd-server-tailscale-service.yaml
+  
+helmCharts:
+  - name: vault-static-secret
+    version: 0.1.2
+    repo: https://raw.githubusercontent.com/phamtanvinh/helmcharts/main
+    releaseName: vault-static-secret
+    valuesFile: values-vault-static-secret.yaml

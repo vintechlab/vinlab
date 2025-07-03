@@ -1,0 +1,19 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: vmselect
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasource:
+    name: vmselect
+    type: victoriametrics-datasource
+    url: http://vmselect-vmcluster.lab101-metrics.svc:8481/select/0/prometheus
+    access: proxy
+    basicAuth: false
+    isDefault: true
+    jsonData:
+      tlsSkipVerify: true
+      timeInterval: 5s
+    editable: false

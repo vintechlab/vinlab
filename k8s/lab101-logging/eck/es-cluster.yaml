@@ -1,0 +1,70 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch
+spec:
+  version: 9.0.3
+  nodeSets:
+    - name: master
+      count: 1
+      config:
+        node.roles:
+          - master
+        node.store.allow_mmap: false
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  memory: 2Gi
+                  cpu: 500m
+                limits:
+                  memory: 2Gi
+                  cpu: 1
+    - name: data
+      count: 2
+      config:
+        node.roles:
+          - data
+          - remote_cluster_client
+        node.store.allow_mmap: false
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  memory: 2Gi
+                  cpu: 500m
+                limits:
+                  memory: 2Gi
+                  cpu: 1
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: data-nodes-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      elasticsearch.k8s.elastic.co/cluster-name: elasticsearch
+      elasticsearch.k8s.elastic.co/node-data: "true"
+      elasticsearch.k8s.elastic.co/node-master: "false"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: master-nodes-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      elasticsearch.k8s.elastic.co/cluster-name: elasticsearch
+      elasticsearch.k8s.elastic.co/node-data: "false"
+      elasticsearch.k8s.elastic.co/node-master: "true"

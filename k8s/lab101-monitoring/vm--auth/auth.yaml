@@ -1,0 +1,19 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAuth
+metadata:
+  name: vmauth
+spec:
+  selectAllByDefault: true
+  userNamespaceSelector: {}
+  userSelector: {}
+  ingress:
+    class_name: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      external-dns.alpha.kubernetes.io/hostname: metrics.vinlab.org
+      kubernetes.io/tls-acme: "true"
+    host: metrics.vinlab.org
+    extraTls:
+      - hosts:
+          - metrics.vinlab.org
+        secretName: defaultcert

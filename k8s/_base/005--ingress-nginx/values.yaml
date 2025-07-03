@@ -1,0 +1,17 @@
+controller:
+  config:
+    ssl-redirect: "true"
+    force-ssl-redirect: "true"
+  replicaCount: 1
+  service:
+    type: LoadBalancer
+    loadBalancerClass: tailscale
+  ingressClassResource:
+    default: false
+  watchIngressWithoutClass: false
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+  extraArgs:
+    default-ssl-certificate: default/defaultcert

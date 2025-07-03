@@ -1,0 +1,9 @@
+namespace: lab101-node-exporter
+resources:
+  - namespace.yaml
+helmCharts:
+  - name: prometheus-node-exporter
+    repo: https://prometheus-community.github.io/helm-charts
+    version: 4.47.0
+    releaseName: prometheus-node-exporter
+    valuesFile: values.yaml

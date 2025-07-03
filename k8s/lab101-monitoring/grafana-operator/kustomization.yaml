@@ -1,0 +1,6 @@
+namespace: lab101-grafana-operator
+resources:
+  - namespace.yaml
+  - base0.yaml
+patches:
+  - path: patches.yaml

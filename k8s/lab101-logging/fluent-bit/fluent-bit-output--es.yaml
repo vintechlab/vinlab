@@ -1,0 +1,32 @@
+---
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterOutput
+metadata:
+  name: es
+  labels:
+    fluentbit.fluent.io/enabled: "true"
+spec:
+  matchRegex: ".*"
+  es:
+    host: elasticsearch-es-http.lab101-logging.svc.cluster.local
+    port: 9200
+    generateID: true
+    # FIXED: Action/metadata line [1] contains an unknown parameter [_type]
+    suppressTypeName: "On"
+    logstashFormat: true
+    logstashPrefix: vinlab
+    logstashDateFormat  : "%Y.%m.%d.%H"
+    timeKey: "@timestamp"
+    bufferSize: 20MB
+    traceError: true
+    httpUser:
+      valueFrom:
+        secretKeyRef:
+          name: elasticsearch-fluent-bit-user
+          key: username
+    httpPassword:
+      valueFrom:
+        secretKeyRef:
+          name: elasticsearch-fluent-bit-user
+          key: password
+

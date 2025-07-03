@@ -1,0 +1,18 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlert
+metadata:
+  name: vmalert
+spec:
+  datasource:
+    url: "http://vmselect-vmcluster.lab101-metrics.svc:8481/select/0/prometheus"
+  remoteWrite:
+    url: "http://vminsert-vmcluster.lab101-metrics.svc:8480/insert/0/prometheus"
+  remoteRead:
+    url: "http://vmselect-vmcluster.lab101-metrics.svc:8481/select/0/prometheus"
+  notifier:
+    url: "http://vmalertmanager-vmalertmanager.lab101-metrics.svc:9093"
+  evaluationInterval: "30s"
+  selectAllByDefault: true
+  # for accessing to vmalert via vmauth with path prefix
+  extraArgs:
+    http.pathPrefix: /vmalert

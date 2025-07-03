@@ -1,0 +1,7 @@
+dashboards:
+  k8s:
+    - name: kube-state-metrics-v2
+      file: files/kube-state-metrics-v2.json
+    
+    - name: node-exporter
+      file: files/node-exporter.json
