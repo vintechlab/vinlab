@@ -10,7 +10,7 @@ env:
         key: api-token
 serviceMonitor:
   enabled: false
-txtOwnerId: vin
+txtOwnerId: vinlab
 domainFilters:
   - vinlab.org
 policy: sync

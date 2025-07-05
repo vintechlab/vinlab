@@ -13,4 +13,3 @@ crds:
   # WARNING: when the CRDs are removed, all cert-manager custom resources
   # (Certificates, Issuers, ...) will be removed too by the garbage collector.
   keep: true
-

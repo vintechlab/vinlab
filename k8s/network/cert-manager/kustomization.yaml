@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: cert-manager
 resources:
   - namespace.yaml
-  - clusterissuer.yaml
 
 helmCharts:
   - name: cert-manager
@@ -17,4 +16,13 @@ helmCharts:
     version: 0.1.2
     repo: https://vintechlab.github.io/vinhelm
     releaseName: vault-static-secret
-    valuesFile: values-vault-static-secret.yaml
+    valuesInline:
+      auth:
+        mount: kubernetes
+        role: vault-role
+      secrets:
+        - name: cloudflare-api-token-secret
+          path: vinlab/cloudflare/api-tokens/edit-zone-dns
+          destination: cloudflare-api-token-secret
+
+
