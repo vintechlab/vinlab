@@ -1,0 +1,8 @@
+namespace: argocd
+resources:
+  - argocd-application-controller-clusterrole.yaml
+  - argocd-application-controller-clusterrolebinding.yaml
+  - argocd-applicationset-controller-clusterrole.yaml
+  - argocd-applicationset-controller-clusterrolebinding.yaml
+  - argocd-server-clusterrole.yaml
+  - argocd-server-clusterrolebinding.yaml

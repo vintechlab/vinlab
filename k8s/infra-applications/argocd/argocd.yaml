@@ -1,0 +1,124 @@
+---
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: argocd
+spec:
+  version: v2.13.1
+  sourceNamespaces:
+    - "argocd"
+  nodePlacement:
+    tolerations:
+      - key: node-role.kubernetes.io/worker
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
+    nodeSelector:
+      node-role.kubernetes.io/worker: "true"
+
+  # NOTE: The following InstanceLabelKey is the default one.
+  applicationInstanceLabelKey: app.kubernetes.io/instance
+  extraConfig:
+    application.resourceTrackingMethod: annotation+label
+
+  server:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 125m
+        memory: 128Mi
+    route:
+      enabled: true
+    insecure: true
+    host: https://argocd.vinlab.org
+
+  repo:
+    # initContainers:
+    #   - name: registry-auth
+    #     image: quay.io/argoproj/argocd:v2.13.1
+    #     env:
+    #       - name: HELM_CONFIG_HOME
+    #         value: /helm-auth
+    #       - name: HELM_REGISTRY_CONFIG
+    #         value: /helm-auth/config.json
+    #     volumeMounts:
+    #       - name: registry-auth-dir
+    #         mountPath: /helm-auth
+    #       - name: helm-credentials-dir
+    #         mountPath: /helm-credentials
+    #         readOnly: true
+    #     command:
+    #       - /bin/bash
+    #       - -exc
+    #       - "base64 -w0 /helm-credentials/sa.json | helm registry login -u _json_key_base64 --password-stdin  https://me-central2-docker.pkg.dev"
+    # env:
+    #   - name: HELM_CONFIG_HOME
+    #     value: /helm-auth
+    #   - name: HELM_REGISTRY_CONFIG
+    #     value: /helm-auth/config.json
+    # volumes:
+    #   - name: registry-auth-dir
+    #     emptyDir: {}
+    #   - name: helm-credentials-dir
+    #     secret:
+    #       secretName: argocd-artifact-registry-secret
+    # volumeMounts:
+    #   - name: registry-auth-dir
+    #     mountPath: /helm-auth
+
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+
+  ha:
+    enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+
+  redis:
+    image: docker.io/library/redis
+    version: 7.4.1-alpine3.20
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+
+  controller:
+    enabled: true
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2048Mi
+      requests:
+        cpu: 250m
+        memory: 1024Mi
+
+  applicationSet:
+    enabled: true
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2048Mi
+      requests:
+        cpu: 250m
+        memory: 1024Mi
+    # https://argo-cd.readthedocs.io/en/latest/operator-manual/applicationset/Generators-Git-File-Globbing/
+    extraCommandArgs:
+      - "--enable-new-git-file-globbing"
+    # logLevel: debug
+
+  kustomizeBuildOptions: --enable-helm

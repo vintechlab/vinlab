@@ -1,0 +1,17 @@
+---
+namespace: argocd
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - argocd.yaml
+  - ingress.yaml
+  - argocd-server-tailscale-service.yaml
+  - rbac/
+  # - applications/
+helmCharts:
+  - name: vault-static-secret
+    version: 0.1.2
+    repo: https://vintechlab.github.io/vinhelm
+    releaseName: vault-static-secret
+    valuesFile: values-secrets.yaml
