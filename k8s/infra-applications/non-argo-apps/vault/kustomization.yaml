@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: vault
+resources:
+  - namespace.yaml
+helmCharts:
+  - name: vault
+    version: 0.29.1
+    repo: https://helm.releases.hashicorp.com
+    releaseName: vault
+    valuesFile: values.yaml
+
+patches:
+  - target:
+      kind: Ingress
+      name: vault
+      namespace: vault
+    patch: |-
+      - op: replace
+        path: /metadata/annotations/external-dns.alpha.kubernetes.io~1hostname
+        value: vault.vinlab.org
+
+      - op: replace
+        path: /spec/rules/0/host
+        value: vault.vinlab.org
+
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: vault.vinlab.org

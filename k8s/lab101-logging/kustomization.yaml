@@ -1,5 +1,0 @@
-resources:
-  - namespace.yaml
-  - eck
-  - fluent-operator
-  - fluent-bit

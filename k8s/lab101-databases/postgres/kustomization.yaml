@@ -1,4 +1,0 @@
-namespace: lab101-postgres
-resources:
-  - namespace.yaml
-  - cluster.yaml

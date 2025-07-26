@@ -1,4 +1,0 @@
-namespace: lab101-metrics
-resources:
-  - deployment.yaml
-  - datasources.yaml

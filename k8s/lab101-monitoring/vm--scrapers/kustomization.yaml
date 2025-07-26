@@ -1,3 +1,0 @@
-namespace: lab101-metrics
-resources:
-  - service-scrape.yaml

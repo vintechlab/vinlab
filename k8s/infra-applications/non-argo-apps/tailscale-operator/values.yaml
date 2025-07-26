@@ -1,0 +1,27 @@
+oauth: {}
+oauthSecretVolume: {}
+
+installCRDs: true
+
+operatorConfig:
+  defaultTags:
+    - "tag:k8s-operator"
+  nodeSelector:
+    kubernetes.io/os: linux
+  resources: {}
+  tolerations: []
+ingressClass:
+  enabled: true
+
+proxyConfig:
+  image:
+    repository: tailscale/tailscale
+    tag: ""
+    digest: ""
+  defaultTags: "tag:k8s"
+  firewallMode: auto
+  defaultProxyClass: ""
+
+apiServerProxyConfig:
+  mode: "false"
+imagePullSecrets: []

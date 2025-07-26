@@ -1,3 +1,0 @@
-resources:
-  - https://download.elastic.co/downloads/eck/3.0.0/crds.yaml
-  - https://download.elastic.co/downloads/eck/3.0.0/operator.yaml

@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tailscale-operator
+resources:
+  - namespace.yaml
+helmCharts:
+  - name: tailscale-operator
+    version: 1.78.3
+    repo: https://pkgs.tailscale.com/helmcharts
+    namespace: tailscale-operator
+    releaseName: tailscale-operator
+    valuesFile: values.yaml
+
+  - name: vault-static-secret
+    version: 0.1.2
+    repo: https://vintechlab.github.io/vinhelm
+    releaseName: vault-static-secret
+    valuesInline:
+      auth:
+        mount: kubernetes
+        role: infra
+      secrets:
+        - name: operator-oauth
+          path: vinlab/tailscale/oauth/tailscale-operator
+          destination: operator-oauth

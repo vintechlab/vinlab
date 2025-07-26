@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tigera-operator
+resources:
+  - crds-v3.30.2.yaml
+  - tigera-operator-v3.30.2.yaml

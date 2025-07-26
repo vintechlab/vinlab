@@ -1,9 +1,0 @@
-namespace: lab101-metrics
-helmCharts:
-  - name: grafana-dashboard
-    version: 0.1.0
-    releaseName: grafana-dashboard
-    valuesFile: values.yaml
-  
-helmGlobals:
-  chartHome: ./charts

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: calico-system
+resources:
+  - namespace.yaml
+  - installation.yaml
+  - apisever.yaml
+  - goldmane.yaml
+  - whisker.yaml
+patches:
+  - target:
+      kind: Installation
+      name: default
+      namespace: calico-system
+    patch: |-
+      - op: replace
+        path: /spec/calicoNetwork/ipPools/0/cidr
+        value: "192.168.0.0/16"
