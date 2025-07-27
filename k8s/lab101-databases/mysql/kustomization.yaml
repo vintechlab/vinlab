@@ -1,0 +1,17 @@
+namespace: lab101-mysql
+resources:
+  - namespace.yaml
+  - cluster.yaml
+helmCharts:
+  - name: vault-static-secret
+    version: 0.1.2
+    repo: https://vintechlab.github.io/vinhelm
+    releaseName: vault-static-secret
+    valuesInline:
+      auth:
+        mount: kubernetes
+        role: database
+      secrets:
+        - name: mysql-user-root
+          path: vinlab/databases/mysql/users/root
+          destination: mysql-user-root
