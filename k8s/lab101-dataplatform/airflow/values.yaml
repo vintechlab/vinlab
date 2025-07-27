@@ -1,0 +1,160 @@
+images:
+  airflow:
+    repository: ~
+    tag: ~
+
+nodeSelector:
+  node-role.kubernetes.io/worker: "true"
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: node-role.kubernetes.io/worker
+              operator: In
+              values:
+                - "true"
+
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+migrateDatabaseJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+  jobAnnotations:
+    argocd.argoproj.io/hook: Sync
+
+createUserJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+
+postgresql:
+  enabled: false
+
+# Airflow database & redis config
+data:
+  metadataSecretName: airflow-common-secrets
+  # When providing secret names and using the same database for metadata and
+  # result backend, for Airflow < 2.4.0 it is necessary to create a separate
+  # secret for result backend but with a db+ scheme prefix.
+  # For Airflow >= 2.4.0 it is possible to not specify the secret again,
+  # as Airflow will use sql_alchemy_conn with a db+ scheme prefix by default.
+  resultBackendSecretName: ~
+
+  # # Otherwise pass connection values in
+  # metadataConnection:
+  #   user: airflow
+  #   pass: airflow
+  #   protocol: mysql
+  #   host: mysql-innodbcluster.lab101-mysql.svc.cluster.local
+  #   port: 3306
+  #   db: airflow
+  #   sslmode: disable
+
+# Ingress configuration
+ingress:
+  web:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      external-dns.alpha.kubernetes.io/hostname: airflow.vinlab.org
+      kubernetes.io/tls-acme: "true"
+    # The hostnames or hosts configuration for the web Ingress
+    hosts:
+      - name: airflow.vinlab.org
+        tls:
+          enabled: true
+          secretName: defaultcert
+
+    ingressClassName: nginx
+
+# Airflow executor
+# One of: LocalExecutor, LocalKubernetesExecutor, CeleryExecutor, KubernetesExecutor, CeleryKubernetesExecutor
+executor: "KubernetesExecutor"
+
+# Fernet key settings
+fernetKeySecretName: airflow-common-secrets
+
+# Flask secret key for Airflow Webserver: `[webserver] secret_key` in airflow.cfg
+webserverSecretKeySecretName: airflow-common-secrets
+
+# Airflow Worker Config
+workers:
+  replicas: 1
+  extraVolumes:
+    - name: airflow-plugins
+      persistentVolumeClaim:
+        claimName: pvc-airflow-plugins
+
+  extraVolumeMounts:
+    - mountPath: /opt/airflow/plugins
+      name: airflow-plugins
+      readOnly: true
+
+scheduler:
+  enabled: true
+  replicas: 1
+  extraVolumes:
+    - name: airflow-plugins
+      persistentVolumeClaim:
+        claimName: pvc-airflow-plugins
+
+  extraVolumeMounts:
+    - mountPath: /opt/airflow/plugins
+      name: airflow-plugins
+      readOnly: true
+
+webserver:
+  enabled: true
+  replicas: 1
+  service:
+    annotations:
+      tailscale.com/expose: "true"
+  extraVolumes:
+    - name: airflow-plugins
+      persistentVolumeClaim:
+        claimName: pvc-airflow-plugins
+
+  extraVolumeMounts:
+    - mountPath: /opt/airflow/plugins
+      name: airflow-plugins
+      readOnly: true
+
+triggerer:
+  enabled: true
+
+statsd:
+  enabled: true
+
+redis:
+  enabled: false
+
+dags:
+  persistence:
+    enabled: true
+    existingClaim: pvc-airflow-dags
+  gitSync:
+    enabled: false
+    repo: https://github.com/astronomer/2-9-example-dags.git
+    branch: main
+    rev: HEAD
+    ref: main
+    depth: 1
+    maxFailures: 0
+    subPath: "tests/dags"
+    period: 5s
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+logs:
+  persistence:
+    enabled: true
+    existingClaim: pvc-airflow-logs
